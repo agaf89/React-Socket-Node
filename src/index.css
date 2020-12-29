@@ -1,13 +1,45 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@import '~materialize-css/dist/css/materialize.min.css';
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.chat-wrapper {
+    overflow-y: auto;
+    margin: 0 auto;
+    margin-top: 50px;
+    max-width: 600px;
+    height: 400px;
+    background-color:#1E232B;
+}
+.d-flex {
+    display: flex;
+    max-width: 600px;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+.mt-btn {
+    margin-top: 24px;
+}
+.chat-item{
+    
+}
+.chat-wrapper__item {
+    display: inline-flex;
+    background-color: rgba(0,0,0, .2);
+    border-radius: 10px;
+    position: relative;
+    margin: 10px 0;
+    align-items: center;
+    padding: 10px 10px;
+    
+}
+.chat-wrapper__item span {
+    font-size: 10px;
+    position: absolute;
+    right: 10px;
+    bottom: 2px;
+}
+.chat-wrapper__item div {
+    width: 48px;
+    color: #D8C871;
+}
+i.active {
+    color: #F3A438 !important;
 }
