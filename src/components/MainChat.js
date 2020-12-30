@@ -41,7 +41,6 @@ const MainChat = ({postsChat}) => {
                             </div>
                         )
                     })}
-                    <div className='testy'></div>
                 </ul>
             </div>
         
