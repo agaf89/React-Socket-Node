@@ -1,20 +1,16 @@
 import 'materialize-css'
-import  InputChat  from './components/InputChat';
-import MainChat  from './components/MainChat';
-import { Navbar } from './components/Navbar';
+import {BrowserRouter as Router} from 'react-router-dom'
+import { useRoutes } from './routes';
 
 function App() {
-
+  const routes = useRoutes(false)
   
   return (
-    <>
-      <Navbar/>
-      <div className='container'>
-          <MainChat/>
-          <InputChat/>
-      </div>
+    <Router>
       
-    </>
+      {routes}
+      
+    </Router>
   );
 }
 

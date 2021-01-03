@@ -4,13 +4,13 @@
     overflow-y: auto;
     margin: 0 auto;
     margin-top: 50px;
-    max-width: 600px;
-    height: 400px;
+    max-width: 900px;
+    height: 66vh;
     background-color:#1E232B;
 }
 .d-flex {
     display: flex;
-    max-width: 600px;
+    max-width: 850px;
     justify-content: space-between;
     margin-top: 1rem;
     position: relative;
@@ -74,3 +74,71 @@ i.active {
     visibility: visible;
     opacity: 1;
 }
+.bcg-auth{
+    width: 100vw;
+    height: 100vh;
+    background-color: #1E232B;
+    color: #FEFCEF;
+}
+.bcg-auth strong {
+    color: #F35531;
+}
+
+.bcg-auth .pink {
+    margin-top: 5rem;
+}
+input.yellow-input {
+    border-bottom: 1px solid #fff !important;
+    box-shadow: 0 1px 0 0 black !important;
+    color: #FEFCEF;
+}
+input.yellow-input + label {
+    color: #FEFCEF !important;
+}
+input.yellow-input:focus + label {
+    color: #ffeb3b !important;
+}
+input.yellow-input:focus {
+    border-bottom: 3px solid #ffeb3b !important;
+    box-shadow: 0 1px 0 0 transparent  !important;
+}
+.mt-card {
+    margin-top: 0.5rem;
+}
+.d-none {
+    display: none;
+}
+.tabs {
+    background-color: transparent;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+}
+.tabs ul {
+    overflow: hidden;
+}
+.tabs li {
+    transition: all 0.4s !important;
+}
+.tabs li:last-child {
+    border-right: none;
+}
+
+.tabs a {
+    color: #FEFCEF !important;
+    transition: all 0.2s !important;
+}
+
+.active-tab {
+    background-color: rgba(0,0,0, .2);
+    
+}
+.active-a {
+    transition: all 0.5s;
+    transform: scale(1.1);
+}
+.card .card-action {
+    border-top: none !important;
+    padding-top: 5px;
+}
+

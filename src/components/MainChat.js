@@ -22,7 +22,7 @@ const MainChat = ({postsChat}) => {
 
     return (
         
-            <div className='chat-wrapper z-depth-3'>
+            <div className='chat-wrapper z-depth-4'>
                 <ul style={style.ul}>
                     {postsChat.map( item => {
                         return (
