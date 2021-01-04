@@ -18,7 +18,6 @@ const style = {
 
 
 const MainChat = ({postsChat}) => {
-    
 
     return (
         

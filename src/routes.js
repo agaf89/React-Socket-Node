@@ -9,12 +9,13 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path='/system-chat' exact>
                     <Chat/>
                 </Route>
-                <Route path='/chat' exact>
+                <Route path='/chat:id' exact>
                     <Chat/>
                 </Route>
                 <Route path='/info' exact>
                     <Chat/>
                 </Route>
+                <Redirect to={'/system-chat'}/>
             </Switch>
         )
     }

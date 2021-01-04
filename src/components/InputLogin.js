@@ -1,4 +1,4 @@
-export const InputLogin = ({formHandler, registerHandler}) => {
+export const InputLogin = ({formHandler, registerHandler, loading}) => {
     return (
         <>
              <div className="card-content">
@@ -8,7 +8,7 @@ export const InputLogin = ({formHandler, registerHandler}) => {
                             id="email"
                             type="text"
                             name='email'
-                            className='yellow-input'
+                            className='green-input'
                             onChange={formHandler}
                         />
                         <label htmlFor="email">Email</label>
@@ -18,7 +18,7 @@ export const InputLogin = ({formHandler, registerHandler}) => {
                             id="password"
                             type="password"
                             name='password'
-                            className='yellow-input'
+                            className='green-input'
                             onChange={formHandler}
                         />
                         <label htmlFor="password">Пароль</label>
@@ -26,7 +26,7 @@ export const InputLogin = ({formHandler, registerHandler}) => {
                 </div>
             </div>
             <div className="card-action center-align">
-                <button onClick={registerHandler} className='btn green accent-3 black-text' style={{marginRight: '10px'}}>Войти</button>
+                <button disabled={loading} onClick={registerHandler} className='btn green accent-3 black-text z-depth-2 waves-effect'>Войти</button>
 {/*                 <button  className='btn yellow black-text'>Регистрация</button>
  */}        </div>
         </>

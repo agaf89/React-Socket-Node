@@ -1,33 +1,71 @@
-import { useEffect, useState } from 'react'
-import { connect } from 'react-redux';
+import { useEffect, useState, Suspense, lazy, useCallback } from 'react'
+import { connect, useDispatch } from 'react-redux';
 import { createPost } from './../redux/actions';
-import Picker from 'emoji-picker-react';
+import io from 'socket.io-client';
+import { Spinner } from './Spinner';
+const socket = io.connect('http://localhost:5000')
 
 
-const InputChat = ({ createPost }) => {
+
+const ProfilePage = lazy(() => {
+    const Picker = import('emoji-picker-react')
+    return Picker
+});
+let a = ''
+
+
+
+
+const InputChat = (/* { createPost } */) => {
+    
     const [value, setValue] = useState({
         title: '',
         id: ''
     });
+    const [showEmoji, setStatusEmoji] = useState(false)
+    const styleTextarea = {};
+    if (!value.title){
+        styleTextarea.height = '45px'
+    }
+    let dispatch = useDispatch();
+    
     useEffect(() => {
+        
         const elems = document.querySelectorAll('.autocomplete');
         window.M.Autocomplete.init(elems);
-    }, [])
+        window.M.updateTextFields()
+        const sendMessage = (data) => {
+            console.log('!!!!!!!', data)
+            setTimeout(() => {
+                const q = document.querySelectorAll('.chat-wrapper__item')
+                q[q.length - 1].scrollIntoView({ block: "center", behavior: "smooth" });
+            })
+            dispatch(createPost(data))
+        }
+
+
+        socket.on('login', sendMessage )
+        console.log(socket.off)
+        return () => socket.off('login', sendMessage )
+        
+    },[])
 
 
 
     const formHandler = (e) => {
+        socket.emit('login', value)
+        
+        
         e.preventDefault();
         if (!value.title.trim()) {
             window.M.toast({ html: 'Напишите сообщение' })
             return
         }
-        createPost(value)
+        console.log(value)
+        
+
         setValue({ title: '', id: '' });
-        setTimeout(() => {
-            const q = document.querySelectorAll('.chat-wrapper__item')
-            q[q.length - 1].scrollIntoView({ block: "center", behavior: "smooth" });
-        })
+        
     }
 
 
@@ -43,9 +81,10 @@ const InputChat = ({ createPost }) => {
     };
 
     const toggleEmoji = () => {
+        setStatusEmoji(true)
         const emoji = document.querySelector('.emoji-block')
         emoji.classList.toggle('active-emoji')
-
+        
         document.addEventListener('click', (e) => {
             const target = e.target
             if (!target.closest('.emoji-block') && target.tagName !== 'I') {
@@ -60,8 +99,16 @@ const InputChat = ({ createPost }) => {
                 <div className="row">
                     <div className="input-field col s12" style={{ right: '13px', width: '94%' }}>
                         <i className="material-icons prefix" style={{ fontSize: '21px', top: '15px' }}>textsms</i>
-                        <input  autoComplete="off" onChange={inputHandler} value={value.title} type="text" id="chat" className="validate"></input>
-                        <label htmlFor="chat"> Сообщение </label>
+                        <textarea 
+                            autoComplete="off" 
+                            onChange={inputHandler} 
+                            value={value.title} 
+                            type="text" 
+                            id="textarea1" 
+                            className="materialize-textarea"
+                            style={styleTextarea}>
+                        </textarea>
+                        <label htmlFor="textarea1"> Сообщение </label>
                         <i onClick={toggleEmoji} className="material-icons prefix i-emoji pulse">insert_emoticon</i>
                     </div>
                 </div>
@@ -69,8 +116,8 @@ const InputChat = ({ createPost }) => {
             <button className="btn waves-effect pink mt-btn" type="submit" name="action">Send
                 <i className="material-icons center">email</i>
             </button>
-            <div className='emoji-block'>
-                <Picker onEmojiClick={onEmojiClick} />
+            <div className='emoji-block'> 
+                {showEmoji && <Suspense fallback={ <Spinner />}><ProfilePage onEmojiClick={onEmojiClick} /></Suspense>}
             </div>
         </form>
     )

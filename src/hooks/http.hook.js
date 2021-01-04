@@ -1,11 +1,12 @@
-import { useState, useCallback} from 'react'
+import { useCallback} from 'react'
+import { useDispatch } from 'react-redux'
+import { hideError, hideLoading, showError, showLoading } from '../redux/actions'
 
 export const useHttp = () => {
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
+    const dispatch = useDispatch()
 
     const request = useCallback(async (url, method = "GET", body = null, headers={}) => {
-        setLoading(true)
+        dispatch(showLoading())
         try {
             if (body){
                 body = JSON.stringify(body)
@@ -21,18 +22,18 @@ export const useHttp = () => {
             if ( !response.ok ){
                 throw new Error (data.message || 'Что-то пошло не так')
             }
-
-            setLoading(false)
+            dispatch(hideLoading())
             return data
         } catch (e) {
-            setLoading(false)
-            setError(e.message)
             
+            console.log(e.message)
+            dispatch(hideLoading())
+            dispatch(showError(e.message))
+            dispatch(hideError())
             throw e
         }
-    },[])
-    const clearError = useCallback ( () => setError(null),[])
+    },[dispatch])
     return {
-        loading, request, error, clearError
+         request
     }
 }

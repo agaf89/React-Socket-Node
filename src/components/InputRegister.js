@@ -1,4 +1,4 @@
-export const InputRegister = ({formHandler, registerHandler}) => {
+export const InputRegister = ({formHandler, registerHandler, loading}) => {
     return (
         <>
              <div className="card-content">
@@ -7,7 +7,7 @@ export const InputRegister = ({formHandler, registerHandler}) => {
                         <input 
                             id="name"
                             type="text"
-                            name='name'
+                            name='nameUser'
                             className='yellow-input'
                             onChange={formHandler}
                         />
@@ -36,7 +36,7 @@ export const InputRegister = ({formHandler, registerHandler}) => {
                 </div>
             </div>
             <div className="card-action center-align">
-                <button onClick={registerHandler} className='btn yellow black-text'>Регистрация</button>
+                <button disabled={loading} onClick={registerHandler} className='btn waves-effect yellow black-text z-depth-2'>Регистрация</button>
             </div>
         </>
     )
