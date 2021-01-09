@@ -5,8 +5,8 @@ import { NavLink, useHistory } from 'react-router-dom';
 export const Navbar = () => {
     const history = useHistory()
     const { logout } = useAuth()
-
     useEffect(()=> {
+        
         const elems = document.querySelectorAll('.sidenav');
         window.M.Sidenav.init(elems);
     },[])

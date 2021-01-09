@@ -1,6 +1,7 @@
 import { Switch, Route, Redirect } from "react-router-dom"
 import {Chat} from "./pages/Chat"
 import { Auth } from "./pages/Auth"
+import { PrivateChat } from "./pages/PrivateChat"
 
 export const useRoutes = (isAuthenticated) => {
     if (isAuthenticated){
@@ -9,11 +10,11 @@ export const useRoutes = (isAuthenticated) => {
                 <Route path='/system-chat' exact>
                     <Chat/>
                 </Route>
-                <Route path='/chat:id' exact>
-                    <Chat/>
+                <Route path='/chat/ID/:id' exact>
+                    <PrivateChat/>
                 </Route>
                 <Route path='/info' exact>
-                    <Chat/>
+                <h1>123</h1>
                 </Route>
                 <Redirect to={'/system-chat'}/>
             </Switch>

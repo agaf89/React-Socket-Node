@@ -1,9 +1,15 @@
 import { useCallback} from 'react'
 import { useDispatch } from 'react-redux'
 import { hideError, hideLoading, showError, showLoading } from '../redux/actions'
+import { useAuth } from './auth.hook'
+import { useMessage } from './message.hook'
 
 export const useHttp = () => {
     const dispatch = useDispatch()
+    const {logout} = useAuth()
+    const message = useMessage()
+    
+    
 
     const request = useCallback(async (url, method = "GET", body = null, headers={}) => {
         dispatch(showLoading())
@@ -18,21 +24,22 @@ export const useHttp = () => {
                 headers
             })
             const data = await response.json()
-            
             if ( !response.ok ){
-                throw new Error (data.message || 'Что-то пошло не так')
+                logout()
+                dispatch(showError(data.message))
+                message('Время авторизации вышло', true)
+                return []
             }
             dispatch(hideLoading())
             return data
         } catch (e) {
-            
             console.log(e.message)
             dispatch(hideLoading())
             dispatch(showError(e.message))
             dispatch(hideError())
             throw e
         }
-    },[dispatch])
+    },[logout,dispatch])
     return {
          request
     }

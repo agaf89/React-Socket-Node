@@ -1,80 +1,61 @@
-import { useEffect, useState, Suspense, lazy, useCallback } from 'react'
-import { connect, useDispatch } from 'react-redux';
+import { useEffect, useState, Suspense, lazy } from 'react'
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { createPost } from './../redux/actions';
-import io from 'socket.io-client';
 import { Spinner } from './Spinner';
-const socket = io.connect('http://localhost:5000')
-
-
+import { useMessage } from '../hooks/message.hook';
+import { socket } from '../helpers/socket';
 
 const ProfilePage = lazy(() => {
     const Picker = import('emoji-picker-react')
     return Picker
 });
-let a = ''
 
 
 
 
-const InputChat = (/* { createPost } */) => {
-    
-    const [value, setValue] = useState({
-        title: '',
-        id: ''
-    });
+const InputChat = () => {
+    const {token} = useSelector(state => state.auth)
+    const message = useMessage()
+    const [value, setValue] = useState('');
     const [showEmoji, setStatusEmoji] = useState(false)
     const styleTextarea = {};
-    if (!value.title){
+    if (!value.message){
         styleTextarea.height = '45px'
     }
     let dispatch = useDispatch();
-    
+
     useEffect(() => {
         
         const elems = document.querySelectorAll('.autocomplete');
         window.M.Autocomplete.init(elems);
         window.M.updateTextFields()
         const sendMessage = (data) => {
-            console.log('!!!!!!!', data)
-            setTimeout(() => {
-                const q = document.querySelectorAll('.chat-wrapper__item')
-                q[q.length - 1].scrollIntoView({ block: "center", behavior: "smooth" });
-            })
-            dispatch(createPost(data))
+            dispatch(createPost([data]))
         }
-
-
-        socket.on('login', sendMessage )
-        console.log(socket.off)
-        return () => socket.off('login', sendMessage )
+        socket.on('postMessage', sendMessage )
+        socket.on('error', (error) => {
+            message(error, true)
+        })
         
     },[])
 
-
-
     const formHandler = (e) => {
-        socket.emit('login', value)
-        
-        
-        e.preventDefault();
-        if (!value.title.trim()) {
-            window.M.toast({ html: 'Напишите сообщение' })
+        e.preventDefault()
+        console.log( value)
+        if (!value.trim()) {
+            message('Напишите сообщение')
             return
         }
-        console.log(value)
-        
-
-        setValue({ title: '', id: '' });
-        
+        setValue('');
+        socket.emit('postMessage', {value, token})
     }
-
-
+   
     const inputHandler = (e) => {
-        setValue({ title: e.target.value, id: new Date().toLocaleTimeString() })
+        setValue( e.target.value )
     }
 
     const onEmojiClick = (_, emojiObject) => {
-        setValue({ title: value.title + emojiObject.emoji, id: new Date().toLocaleTimeString() })
+        setValue( value + emojiObject.emoji)
         if (emojiObject.emoji) {
             document.querySelector('.input-field label').classList.add('active')
         }
@@ -102,7 +83,7 @@ const InputChat = (/* { createPost } */) => {
                         <textarea 
                             autoComplete="off" 
                             onChange={inputHandler} 
-                            value={value.title} 
+                            value={value} 
                             type="text" 
                             id="textarea1" 
                             className="materialize-textarea"

@@ -1,4 +1,5 @@
-import { CREATE_POST, HIDE_ERROR, HIDE_LOADER, IS_AUTH_FALSE, IS_AUTH_TRUE, SHOW_ERROR, SHOW_LOADER, TOKEN, USER_ID } from "./types";
+import { socket } from "../helpers/socket";
+import { COUNT_USERS, CREATE_POST, HIDE_ERROR, HIDE_LOADER, IS_AUTH_FALSE, IS_AUTH_TRUE, LIST_USERS, SHOW_ERROR, SHOW_LOADER, TOKEN, USER_ID } from "./types";
 
 export function createPost (post) {
     return {
@@ -48,4 +49,18 @@ export function setUserID (id) {
         type: USER_ID,
         payload: id
     }
+}
+export function setCountUsers () {
+    return async dispatch => {
+        await socket.on('usersInfo', data => {
+            dispatch({type: COUNT_USERS, payload: data.count})
+        })
+    } 
+}
+export function setUsers () {
+    return async dispatch => {
+        await socket.on('usersInfo', data => {
+            dispatch({type: LIST_USERS, payload: data.Users})
+        })
+    } 
 }

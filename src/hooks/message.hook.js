@@ -1,8 +1,11 @@
 import {useCallback} from 'react'
 
 export const useMessage = () => {
-    return useCallback ( text => {
-        if (window.M && text) {
+    return useCallback ( (text, classes) => {
+        if (classes){
+            window.M.toast({html: text, classes: 'danger'})
+        }
+        if (window.M && text && !classes) {
             window.M.toast({html: text})
         }
     },[])

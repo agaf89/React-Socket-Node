@@ -2,22 +2,27 @@ import { useEffect, useState } from 'react';
 import { useHttp } from './../hooks/http.hook';
 import { InputLogin } from '../components/InputLogin';
 import { InputRegister } from '../components/InputRegister';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMessage } from '../hooks/message.hook';
 import { useAuth } from '../hooks/auth.hook';
+import { hideError } from '../redux/actions';
+import { socket } from '../helpers/socket';
 
 export const Auth = () => {
     const {request} = useHttp()
     const message = useMessage();
     const { login } = useAuth()
-    
+    const { token } = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+    socket.emit('disconected', token )
     const [form, setForm] = useState({email: '', password: '', nameUser: ''})
     const [loginActive, setLogin ] = useState(true)
     const {loading, errorMessage} = useSelector(state => state.login)
     
     useEffect(()=> {
-        message(errorMessage)
-    }, [errorMessage,message])
+        errorMessage && message(errorMessage, true)
+        dispatch(hideError())
+    }, [errorMessage])
 
 
     const classActive = "tab col s6 active-tab"
@@ -35,8 +40,7 @@ export const Auth = () => {
     const loginHandler = async () => {
         try {
             const {token, userId} = await request('/api/auth/login', 'POST', {...form})
-            message('Вы успешно авторизовались')
-            login(token, userId)
+            token && login(token, userId)
         } catch (e) {}
     }
     

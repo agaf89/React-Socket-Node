@@ -1,14 +1,11 @@
 export const Spinner = () => {
     return (
-        <div className="preloader-wrapper small active spinner">
-            <div className="spinner-layer spinner-blue-only">
-            <div className="circle-clipper left">
-                <div className="circle"></div>
-            </div><div className="gap-patch">
-                <div className="circle"></div>
-            </div><div className="circle-clipper right">
-                <div className="circle"></div>
-            </div>
+        <div align="center" className="cssload-fond spinner">
+            <div className="cssload-container-general">
+                    <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_1"> </div></div>
+                    <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_2"> </div></div>
+                    <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_3"> </div></div>
+                    <div className="cssload-internal"><div className="cssload-ballcolor cssload-ball_4"> </div></div>
             </div>
         </div>
     )
